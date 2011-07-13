@@ -13,15 +13,17 @@ $LOAD_PATH << "#{File.dirname(__FILE__)}/../lib"
 
 require "rest.rb"
 require "rest_htmlprinter.rb"
+require "doc_book_printer.rb"
 
 class Options
 
-  attr_accessor :verbose, :filename, :html, :outline, :output_dir,
+  attr_accessor :verbose, :filename, :html, :outline, :docbook, :output_dir,
     :include_dir
 
   def initialize
     verbose = false
     html = false
+    docbook = false
   end
 
   def self.parse( args )
@@ -42,6 +44,10 @@ class Options
 
     opt.on( "--html", "Create HTML output" ) do
       options.html = true
+    end
+
+    opt.on( "--docbook", "Create DocBook output" ) do
+      options.docbook = true
     end
 
     opt.on( "--outline", "Create outline output" ) do
@@ -97,6 +103,8 @@ begin
     end
   elsif ( options.outline )
     printer = OutlinePrinter.new
+  elsif options.docbook
+    printer = DocBookPrinter.new
   else
     printer = TextPrinter.new
   end

@@ -12,6 +12,7 @@ config/requirements.rb
 lib/rest.rb
 lib/rest_htmlprinter.rb
 lib/rest_test.rb
+lib/doc_book_printer.rb
 script/destroy
 script/generate
 setup.rb
