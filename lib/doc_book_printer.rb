@@ -17,8 +17,9 @@ class DocBookPrinter < Printer
     unless File.exists? @output_dir
       Dir.mkdir @output_dir
     end
-    @index = File.new( @output_dir + "/restdoc.xml", "w" )
-    @xml = Builder::XmlMarkup.new( :target => @index, :indent => 2 )
+
+    @index = File.new @output_dir + "/restdoc.xml", "w"
+    @xml = Builder::XmlMarkup.new :target => @index, :indent => 2
     @xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
     @xml.declare! :DOCTYPE, :appendix, :PUBLIC, "-//Novell//DTD NovDoc XML V1.0//EN", "novdocx.dtd" do |x|
       x.declare! :ENTITY, :%, :'NOVDOC.DEACTIVATE.IDREF', "IGNORE"
@@ -31,27 +32,11 @@ class DocBookPrinter < Printer
 
   def do_finish
     puts "Written #{@index.path}."
-    
-    @xml_examples.each do |f,b|
-      if !XmlFile.exist?( f )
-        STDERR.puts "XML Example '#{f}' is missing."
-      else
-        XmlFile.copy f, @output_dir
-      end
-    end
-    @xml_schemas.each do |f,b|
-      if !XmlFile.exist?( f )
-        STDERR.puts "XML Schema '#{f}' is missing."
-      else
-        XmlFile.copy f, @output_dir
-      end
-    end
-    
     @index.close
   end
 
   def print_section section
-    if ( !section.root? )
+    if !section.root?
       tag = nil
 
       if section.level == 1 || section.level == 2
@@ -63,6 +48,7 @@ class DocBookPrinter < Printer
 
       @xml.tag! tag, section unless tag.nil?
     end
+
     section.print_children self
   end
 
@@ -75,14 +61,7 @@ class DocBookPrinter < Printer
         end
       end
 
-      if false
-        host = request.host
-        if ( host )
-          @xml.p "Host: " + host.name
-        end
-      end
-
-      if request.parameters.size > 0
+      if !request.parameters.empty?
         @xml.p "Arguments:"
         @xml.ul do
           request.parameters.each do |p|
@@ -90,8 +69,8 @@ class DocBookPrinter < Printer
           end
         end
       end
-      request.print_children self
 
+      request.print_children self
     end
   end
 
@@ -156,7 +135,7 @@ class DocBookPrinter < Printer
   end
 
   def print_version version
-    @xml.p "Version: " + version.to_s
+    @xml.para "API Version: " + version.to_s
   end
 
 end
