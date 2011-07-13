@@ -26,55 +26,55 @@ class Options
     docbook = false
   end
 
-  def self.parse( args )
+  def self.parse args
     options = Options.new
 
     opt = OptionParser.new
 
     opt.banner = "Usage: rest_doc [options] filename"
 
-    opt.on( "-h", "--help", "Print this message" ) do
+    opt.on "-h", "--help", "Print this message" do
       puts opt
       exit
     end
 
-    opt.on( "-v", "--verbose", "Verbose mode" ) do
+    opt.on "-v", "--verbose", "Verbose mode" do
       options.verbose = true
     end
 
-    opt.on( "--html", "Create HTML output" ) do
+    opt.on "--html", "Create HTML output" do
       options.html = true
     end
 
-    opt.on( "--docbook", "Create DocBook output" ) do
+    opt.on "--docbook", "Create DocBook output" do
       options.docbook = true
     end
 
-    opt.on( "--outline", "Create outline output" ) do
+    opt.on "--outline", "Create outline output" do
       options.outline = true
     end 
 
-    opt.on( "-o", "=DIRECTORY", "Output directory" ) do |val|
+    opt.on "-o", "=DIRECTORY", "Output directory" do |val|
       options.output_dir = val
     end
 
-    opt.on( "-I", "=DIRECTORY", "Include directory as search path for XML files") do |val|
+    opt.on "-I", "=DIRECTORY", "Include directory as search path for XML files" do |val|
       options.include_dir = val
     end
 
     begin
-      opt.parse!( args )
+      opt.parse! args
     rescue OptionParser::InvalidOption
       puts $!
       puts opt
       exit
     end
 
-    if ( ARGV.size > 1 )
+    if ARGV.size > 1
       puts "Too many arguments"
       puts opt
       exit
-    elsif ( ARGV.size < 1 )
+    elsif ARGV.empty?
       puts "Too few arguments"
       puts opt
       exit
@@ -87,7 +87,7 @@ class Options
 
 end
 
-options = Options.parse( ARGV )
+options = Options.parse ARGV
 
 XmlFile.include_dir = options.include_dir
 
@@ -96,12 +96,12 @@ begin
   document = Document.new
   document.parse_args
 
-  if ( options.html )
+  if options.html
     printer = HtmlPrinter.new
-    if ( options.output_dir )
+    if options.output_dir
       printer.output_dir = options.output_dir
     end
-  elsif ( options.outline )
+  elsif options.outline
     printer = OutlinePrinter.new
   elsif options.docbook
     printer = DocBookPrinter.new
