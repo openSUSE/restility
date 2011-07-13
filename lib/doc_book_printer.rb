@@ -61,15 +61,18 @@ class DocBookPrinter < Printer
         end
 
         if !request.parameters.empty?
-          @xml.p "Arguments:"
-          @xml.ul do
+          @xml.para "Arguments:"
+
+          @xml.variablelist do
             request.parameters.each do |p|
-              @xml.li p.to_s
+              @xml.varlistentry p.to_s
             end
           end
         end
 
-        request.print_children self
+        @xml.listitem do
+          request.print_children self
+        end
       end
     end
   end
@@ -90,43 +93,33 @@ class DocBookPrinter < Printer
   end
 
   def print_result result
-    @xml.para "Result: " + result.name
+    @xml.para "Result: #{result.name}"
   end
   
   def print_body body
-    @xml.para "Body: " + body.name
+    @xml.para "Body: #{body.name}"
   end
 
   def print_xmlresult result
-    print_xml_links "Result", result.name, result.schema
+    print_xml_links result.name, result.schema
   end
 
   def print_xmlbody body
-    print_xml_links "Body", body.name, body.schema
+    print_xml_links body.name, body.schema
   end
 
-  def print_xml_links title, xmlname, schema
+  def print_xml_links xmlname, schema
     example = xmlname + ".xml"
-    if ( !schema || schema.empty? )
+    if !schema || schema.empty?
       schema = xmlname + ".xsd"
     end
-    @xml_examples[ example ] = true
-    @xml_schemas[ schema ] = true
-    @xml.p do |p|
-      p << title
-      p << ": "
-      has_example = XmlFile.exist? example
-      has_schema = XmlFile.exist? schema
-      if has_example
-        @xml.a( "Example", "href" => example )
-      end
-      if has_schema
-        p << " ";
-        @xml.a( "Schema", "href" => schema )
-      end
-      if( !has_example && !has_schema )
-        p << xmlname
-      end
+
+    if XmlFile.exist? example
+      @xml.screen File.read(XmlFile.find_file example)
+    end
+
+    if XmlFile.exist? schema
+      @xml.screen File.read(XmlFile.find_file schema)
     end
   end
 
@@ -135,7 +128,7 @@ class DocBookPrinter < Printer
   end
 
   def print_version version
-    @xml.para "API Version: " + version.to_s
+    @xml.para "API Version: #{version}"
   end
 
 end
