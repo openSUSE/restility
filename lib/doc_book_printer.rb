@@ -39,7 +39,7 @@ class DocBookPrinter < Printer
     if !section.root?
       tag = nil
 
-      if section.level == 1 || section.level == 2
+      if (1..3).include? section.level
         tag = 'title'
       else
         tag = 'unknown'
@@ -53,24 +53,24 @@ class DocBookPrinter < Printer
   end
 
   def print_request request
-    @xml.div( "class" => "request" ) do
+    @xml.variablelist do
+      @xml.varlistentry do
 
-      @xml.p do
-        @xml.a( "name" => request.id ) do
-          @xml.b request.to_s
+        @xml.term do
+          @xml.literal request.to_s
         end
-      end
 
-      if !request.parameters.empty?
-        @xml.p "Arguments:"
-        @xml.ul do
-          request.parameters.each do |p|
-            @xml.li p.to_s
+        if !request.parameters.empty?
+          @xml.p "Arguments:"
+          @xml.ul do
+            request.parameters.each do |p|
+              @xml.li p.to_s
+            end
           end
         end
-      end
 
-      request.print_children self
+        request.print_children self
+      end
     end
   end
 
@@ -86,15 +86,15 @@ class DocBookPrinter < Printer
   end
 
   def print_host host
-    @xml.p "Host: " + host.name
+    @xml.para "Host: " + host.name
   end
 
   def print_result result
-    @xml.p "Result: " + result.name
+    @xml.para "Result: " + result.name
   end
   
   def print_body body
-    @xml.p "Body: " + body.name
+    @xml.para "Body: " + body.name
   end
 
   def print_xmlresult result
