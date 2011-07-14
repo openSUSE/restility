@@ -67,17 +67,11 @@ class DocBookPrinter < Printer
           @xml.literal request.to_s
         end
 
-        if !request.parameters.empty?
-          @xml.para "Arguments:"
-
-          @xml.variablelist do
-            request.parameters.each do |p|
-              @xml.varlistentry p.to_s
-            end
-          end
-        end
-
         @xml.listitem do
+          request.parameters.each do |p|
+            @xml.para p.to_s
+          end
+
           request.print_children self
         end
       end
