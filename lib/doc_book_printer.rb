@@ -69,7 +69,11 @@ class DocBookPrinter < Printer
 
         @xml.listitem do
           request.parameters.each do |p|
-            @xml.para p.to_s
+            @xml.para do
+              @xml.emphasis p.name
+              @xml << " (optional)" if p.optional
+              @xml << " - #{p.description}" if p.description && !p.description.empty?
+            end
           end
 
           request.print_children self
