@@ -81,6 +81,10 @@ class DocBookPrinter < Printer
   def print_text text
     @xml.para do |p|
       text.text.each do |t|
+        t.gsub! "<tt>", ""
+        t.gsub! "</tt>", ""
+        t.gsub! "<em>", "<emphasis>"
+        t.gsub! "</em>", "</emphasis>"
         p << t << "\n"
       end
     end
