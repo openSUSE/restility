@@ -153,6 +153,7 @@ class HtmlPrinter < Printer
   end
 
   def print_contents contents
+    @html.tag! "h#{contents.level}", "Table of Contents"
     @html.p do |p|
       p << create_contents_list( contents.root, 1 )
     end
