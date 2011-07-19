@@ -11,6 +11,14 @@ class HtmlPrinter < Printer
     @output_dir = "html"
     @xml_examples = Hash.new
     @xml_schemas = Hash.new
+
+    @docbook_tag_mapping = {
+      "command" => "tt",
+      "filename" => "tt",
+      "emphasis" => "em",
+      "replaceable" => "em",
+    }
+
   end
 
   def do_prepare
@@ -80,9 +88,17 @@ class HtmlPrinter < Printer
     end
   end
 
+  def replace_docbook_tags text
+    @docbook_tag_mapping.each do |docbook, html|
+      text.gsub! "<#{docbook}>", "<#{html}>"
+      text.gsub! "</#{docbook}>", "</#{html}>"
+    end
+  end
+
   def print_text text
     @html.p do |p|
       text.text.each do |t|
+        replace_docbook_tags t
         p << t << "\n"
       end
     end

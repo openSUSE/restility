@@ -12,6 +12,12 @@ class DocBookPrinter < Printer
     @xml_examples = Hash.new
     @xml_schemas = Hash.new
     @section = 0
+
+    @html_tag_mapping = {
+      "tt" => nil,
+      "em" => "emphasis",
+      "b" => "emphasis",
+    }
   end
 
   def do_prepare
@@ -82,13 +88,21 @@ class DocBookPrinter < Printer
     end
   end
 
+  def replace_html_tags text
+    @html_tag_mapping.each do |html, docbook|
+      if docbook.nil?
+        text.gsub! "<#{html}>", ""
+      else
+        text.gsub! "<#{html}>", "<#{docbook}>"
+        text.gsub! "</#{html}>", "</#{docbook}>"
+      end
+    end
+  end
+
   def print_text text
     @xml.para do |p|
       text.text.each do |t|
-        t.gsub! "<tt>", ""
-        t.gsub! "</tt>", ""
-        t.gsub! "<em>", "<emphasis>"
-        t.gsub! "</em>", "</emphasis>"
+        replace_html_tags t
         p << t << "\n"
       end
     end
