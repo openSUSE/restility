@@ -35,7 +35,7 @@ class DocBookPrinter < Printer
 
   def do_finish
     @xml << "</appendix>\n"
-    puts "Written #{@index.path}."
+    puts "Written #{@index.path}"
     @index.close
   end
 

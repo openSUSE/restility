@@ -105,6 +105,9 @@ begin
     printer = OutlinePrinter.new
   elsif options.docbook
     printer = DocBookPrinter.new
+    if options.output_dir
+      printer.output_dir = options.output_dir
+    end
   else
     printer = TextPrinter.new
   end

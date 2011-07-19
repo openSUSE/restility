@@ -23,7 +23,7 @@ class HtmlPrinter < Printer
   end
 
   def do_finish
-    puts "Written #{@index.path}."
+    puts "Written #{@index.path}"
     
     @xml_examples.each do |f,b|
       if !XmlFile.exist?( f )
