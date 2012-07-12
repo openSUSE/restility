@@ -38,9 +38,12 @@ class XmlFile
         puts STDERR, "Unable to create directory '#{dir_name}'"
       end
     end
-    
-    File.copy( find_file( file_name ), output_dir )
-    
+    src_file = find_file( file_name )
+    unless File.absolute_path(output_dir) == File.absolute_path(File.split( src_file).first)
+      # do not copy to itself
+      FileUtils.cp( src_file, output_dir ) 
+    end
+  
   end
   
   def XmlFile.find_file file_name

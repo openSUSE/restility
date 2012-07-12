@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 require "rest"
+require 'active_support/builder' unless defined?(Builder)
 
 class HtmlPrinter < Printer
 

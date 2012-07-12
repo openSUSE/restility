@@ -7,7 +7,7 @@ require 'active_support'
 require 'erb'
 include ERB::Util
 
-require "ftools"
+require "fileutils"
 
 $LOAD_PATH << "#{File.dirname(__FILE__)}/../lib"
 
