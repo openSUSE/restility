@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "restility"
-  s.version = '0.0.2'
+  s.version = '0.0.3'
   s.date = Time.now.strftime('%F')
   s.summary = "Set of tools for writing REST style web services."
   s.homepage = "https://github.com/openSUSE/restility"
@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.authors = ["Cornelius Schumacher"]
 
   s.files = %w( License.txt )
-  s.files += Dir.glob("bin/**/*")
   s.files += Dir.glob("config/**/*")
   s.files += Dir.glob("lib/**/*")
   s.files += Dir.glob("script/**/*")
