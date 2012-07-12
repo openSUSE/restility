@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "restility"
-  s.version = '0.0.3'
+  s.version = '0.0.4'
   s.date = Time.now.strftime('%F')
   s.summary = "Set of tools for writing REST style web services."
   s.homepage = "https://github.com/openSUSE/restility"
@@ -17,6 +17,4 @@ Gem::Specification.new do |s|
   s.executables = %w( rest_doc rest_test )
   s.description = "Generates REST documentation in Docbook and HTML format."
 
-  s.add_runtime_dependency 'hoe'
-  s.add_runtime_dependency 'newgem'
 end
